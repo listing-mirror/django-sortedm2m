@@ -44,6 +44,11 @@ def create_sorted_many_related_manager(superclass, rel, *args, **kwargs):
             result = super().get_prefetch_queryset(instances, queryset)
             return (self._apply_rel_ordering(result[0]),) + result[1:]
 
+        def get_prefetch_querysets(self, instances, queryset=None):
+            # Apply the same ordering for prefetch ones
+            result = super().get_prefetch_querysets(instances, queryset)
+            return (self._apply_rel_ordering(result[0]),) + result[1:]
+
         def set(self, objs, **kwargs):  # pylint: disable=arguments-differ
             # Choosing to clear first will ensure the order is maintained.
             kwargs['clear'] = True
